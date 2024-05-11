@@ -1,0 +1,100 @@
+# =======================================================================
+# This file contains an ASCII representation of the IP paths stored in
+# the binary skitter arts++ and scamper warts file formats.
+#
+# This ASCII file format is in the sk_analysis_dump text output
+# format: imdc.datcat.org/format/1-003W-7
+#
+# =======================================================================
+# There is one trace per line, with the following tab-separated fields:
+#
+#
+#  1. Key -- Indicates the type of line and determines the meaning of the
+#            remaining fields.  This will always be 'T' for an IP trace.
+#
+# -------------------- Header Fields ------------------
+#
+#  2. Source -- Source IP of skitter/scamper monitor performing the trace.
+#
+#  3. Destination -- Destination IP being traced.
+#
+#  4. ListId -- ID of the list containing this destination address.
+#
+#        This value will be zero if no list ID was provided.  (uint32_t)
+#
+#  5. CycleId -- ID of current probing cycle (a cycle is a single run
+#                through a given list).  For skitter traces, cycle IDs
+#                will be equal to or slightly earlier than the timestamp
+#                of the first trace in each cycle. There is no standard
+#                interpretation for scamper cycle IDs.
+#
+#        This value will be zero if no cycle ID was provided.  (uint32_t)
+#
+#  6. Timestamp -- Timestamp when trace began to this destination.
+#
+# -------------------- Reply Fields ------------------
+#
+#  7. DestReplied -- Whether a response from the destination was received.
+#
+#        R - Replied, reply was received
+#        N - Not-replied, no reply was received;
+#            Since skitter sends a packet with a TTL of 255 when it halts
+#            probing, it is still possible for the final destination to
+#            send a reply and for the HaltReasonData (see below) to not
+#            equal no_halt.  Note: scamper does not perform last-ditch
+#            probing at TTL 255 by default.
+#
+#  8. DestRTT -- RTT (ms) of first response packet from destination.
+#        0 if DestReplied is N.
+#
+#  9. RequestTTL -- TTL set in request packet which elicited a response
+#      (echo reply) from the destination.
+#        0 if DestReplied is N.
+#
+# 10. ReplyTTL -- TTL found in reply packet from destination;
+#        0 if DestReplied is N.
+#
+# -------------------- Halt Fields ------------------
+#
+# 11. HaltReason -- The reason, if any, why incremental probing stopped.
+#
+# 12. HaltReasonData -- Extra data about why probing halted.
+#
+#        HaltReason            HaltReasonData
+#        ------------------------------------
+#        S (success/no_halt)    0
+#        U (icmp_unreachable)   icmp_code
+#        L (loop_detected)      loop_length
+#        G (gap_detected)       gap_limit
+#
+# -------------------- Path Fields ------------------
+#
+# 13. PathComplete -- Whether all hops to destination were found.
+#
+#        C - Complete, all hops found
+#        I - Incomplete, at least one hop is missing (i.e., did not
+#            respond)
+#
+# 14. PerHopData -- Response data for the first hop.
+#
+#       If multiple IP addresses respond at the same hop, response data
+#       for each IP address are separated by semicolons:
+#
+#       IP,RTT,nTries                   (for only one responding IP)
+#       IP,RTT,nTries;IP,RTT,nTries;... (for multiple responding IPs)
+#
+#         where
+#
+#       IP -- IP address which sent a TTL expired packet
+#       RTT -- RTT of the TTL expired packet
+#       nTries -- number of tries before response received from hop
+#
+#       This field will have the value 'q' if there was no response at
+#       this hop.
+#
+# 15. PerHopData -- Response data for the second hop in the same format
+#       as field 14.
+#
+# ...
+#
+# unable to open raw_data/raccolta1.warts
