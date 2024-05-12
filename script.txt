@@ -1,3 +1,0 @@
-obtain: // type of measurement gained
-cycle: // up to 2023 05 05
-src_country: // source country

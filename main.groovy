@@ -1,3 +1,5 @@
+package unipi.dsl
+
 /*
 
     Main module of the CAIDA Ark submodule for GeoDSL.
@@ -27,25 +29,3 @@
 
 
 
-// *: mandatory field, exception made for described fields
-class Caida {
-
-    String obtain // type of data we aim to collect *
-    String team // team name *
-    /*
-        Since CAIDA provides a chronologically sorted dataset, we need to specify the year we aim to collect data from.
-        However, month and day are optional, as the single measurements are stored in a "cyclic" fashion, with the most recent data being stored in the most recent folder.
-        So if only the year is to be specified in the format "YYYYMMDD", the system will automatically select the most recent data available within the year.
-        If upon month and day specification there are no matching dataset, the system will automatically select the most recent data available within the specified month.
-        In the worst case scenario, if the month is not available, the behaviour will be the same as year specification only.
-    */
-    String date // date of the measurement *
-    /*
-        The source country is where the monitor is located.
-        Since the CAIDA dataset, as of now, uses a tuple made by [team, date, source country] to identify a measurement, the source country is a mandatory field.
-        No target country has to be specified since the hops are not necessarily forwarded to a known country/region, being most likely redirected to a random IP address.
-    */
-    String src // source country *  
-    Integer size // number of records we aim to parse within the dataset file, whether not specified it will parse the whole file
-    Integer 
-}
